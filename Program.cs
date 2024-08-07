@@ -20,20 +20,50 @@ class Program {
         }
     }
     static void Game() {
-
+        bool valid = false;
+        int[] intcommand = new int[2];
+        do {
+            try{
+                Console.Write("Maze size (width,depth): ");
+                string size = Console.ReadLine();
+                string[] strcommand = size.Split(",");
+                for (int i = 0; i < strcommand.Length;i++){
+                    intcommand[i] = int.Parse(strcommand[i]);
+                }
+                valid = true;
+            }catch{
+                Console.WriteLine("Invalid choice");
+            }
+        }while(valid==false);
+        MazeGrid gameboard = new MazeGrid(intcommand[0],intcommand[1]);
+        // Initialising cells in the maze
+        gameboard.InitialiseMaze();
+        Console.WriteLine("Not traverse maze");
+        Console.WriteLine(MazePrint(gameboard));
+        // Open start cell wall
+        gameboard.GetMazeCell(0,0).RmFrontWall();
+        // Open goal cell wall
+        gameboard.GetMazeCell(intcommand[0]-1,intcommand[1]-1).RmBackWall();
+        // Generating maze with depth-first search
+        gameboard.DFSGenerateMaze(null,gameboard.GetMazeCell(0,0));
+        Console.WriteLine("Generated maze");
+        Console.WriteLine(MazePrint(gameboard));
     }
     static void testScript(){
         Cell cell1= new Cell(1,1,false);
-        //Console.WriteLine(CellStatus(cell));
         Cell cell2= new Cell(9,0,true);
         Cell[] cells = new Cell[]{cell1,cell2};
         cell1.RmRightWall();
         cell2.RmLeftWall();
         cell2.Visited();
-        //Console.Write(PrintCellFrontWall(cells));
-        //Console.Write(PrintCellLeftRightWall(cells));
-        //Console.Write(PrintCellBackWall(cells));
-        //Console.WriteLine(CellStatus(cell2));
+        Console.WriteLine(CellStatus(cell1));
+        Console.WriteLine(CellStatus(cell2));
+        Console.WriteLine();
+        Console.Write(PrintCellFrontWall(cells));
+        Console.Write(PrintCellLeftRightWall(cells));
+        Console.Write(PrintCellBackWall(cells));
+        Console.WriteLine();
+
         MazeGrid mazeBoard = new MazeGrid(2,2);
         mazeBoard.SetMazeCell(0,0,new Cell(0,0,false));
         mazeBoard.GetMazeCell(0,0).RmFrontWall();
@@ -108,13 +138,19 @@ class Program {
         
     }
     static string MazePrint(MazeGrid _maze) {
-        string mazeprintmessage = "";
+        string mazeprintmessage = "  ";
+        for (int i = 0;i<_maze.Width();i++ ){
+            mazeprintmessage += $"{Convert.ToString(i+1).PadLeft(3)} ";
+        }
+        mazeprintmessage += "\n  ";
         mazeprintmessage += PrintCellFrontWall(_maze.GetMazeRows(0));
-            for (int j = 0;j<_maze.Height();j++){
-                Cell[] rowOfCells = _maze.GetMazeRows(j);
-                mazeprintmessage += PrintCellLeftRightWall(rowOfCells);
-                mazeprintmessage += PrintCellBackWall(rowOfCells);
-            }
+        for (int j = 0;j<_maze.Height();j++){
+            Cell[] rowOfCells = _maze.GetMazeRows(j);
+            mazeprintmessage += $"{j+1} ";
+            mazeprintmessage += PrintCellLeftRightWall(rowOfCells);
+            mazeprintmessage += "  ";
+            mazeprintmessage += PrintCellBackWall(rowOfCells);
+        }
         return mazeprintmessage;
     }
 } 

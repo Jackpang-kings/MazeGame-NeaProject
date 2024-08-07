@@ -12,3 +12,4 @@ C:\Users\jpang18\Documents\Code-Projects\obj\Debug\net7.0\refint\Code-Projects.d
 C:\Users\jpang18\Documents\Code-Projects\obj\Debug\net7.0\Code-Projects.pdb
 C:\Users\jpang18\Documents\Code-Projects\obj\Debug\net7.0\Code-Projects.genruntimeconfig.cache
 C:\Users\jpang18\Documents\Code-Projects\obj\Debug\net7.0\ref\Code-Projects.dll
+C:\Users\jpang18\Documents\Code-Projects\obj\Debug\net7.0\Code-Projects.sourcelink.json
