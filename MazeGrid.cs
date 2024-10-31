@@ -1,8 +1,13 @@
 using System;
+using System.Diagnostics;
+using System.Globalization;
+using Microsoft.CSharp;
+
 namespace MazeGame{
     class MazeGrid {
-    Cell[,] _mazeGrid;
+    public Cell[,] _mazeGrid;
     int width, height;
+    
     public MazeGrid(int w,int h){
         width = w;
         height = h;
@@ -14,6 +19,31 @@ namespace MazeGame{
             rowOfCells[i] = _mazeGrid[i,j];
         }
         return rowOfCells;
+    }
+    public void InitialiseMaze(){
+        for (int i = 0;i<width;i++){
+            for (int j = 0;j<height;j++){
+                _mazeGrid[i,j] = new Cell(i,j,false);
+            }
+        }
+        // Add neighbour cells to cell
+        for (int i = 0;i<width;i++){
+            for (int j = 0;j<height;j++){
+                if (i+1<width){
+                    _mazeGrid[i,j].neighbourCells.Add(_mazeGrid[i+1,j]);
+                }
+                if (i-1>=0){
+                    _mazeGrid[i,j].neighbourCells.Add(_mazeGrid[i-1,j]);
+                }
+                if (j+1<height){
+                    _mazeGrid[i,j].neighbourCells.Add(_mazeGrid[i,j+1]);
+                }
+                if (j-1>=0){
+                    _mazeGrid[i,j].neighbourCells.Add(_mazeGrid[i,j-1]);
+                }
+            }
+        }
+        
     }
     public int Width(){
         return width;
@@ -27,81 +57,96 @@ namespace MazeGame{
     public Cell GetMazeCell(int i, int j){
         return _mazeGrid[i,j];
     }
-    public void InitialiseMaze(){
-        for (int i = 0;i<width;i++){
-            for (int j = 0;j<height;j++){
-                _mazeGrid[i,j] = new Cell(i,j,false);
-                if (i==width-1 && j==height-1){
-                    _mazeGrid[i,j].Goal();
-                }
-            }
-        }
-    }
     public void DFSGenerateMaze(Cell prevCell,Cell currCell) {
-        currCell.Visited();
+        currCell.Visited(true);
         ClearWall(prevCell,currCell);
         Cell nextcell;
         do{
-            nextcell = NeighbourNode(currCell);
+            nextcell = NeighbourCell(currCell);
             if (nextcell!=null){
                 DFSGenerateMaze(currCell,nextcell);
             }
         }while (nextcell != null);
+    } 
+    public void SetAllCellNotVisited(){
+        foreach (Cell cell in _mazeGrid){
+            cell.Visited(false);
+        }
     }
     public void ClearWall(Cell prevCell,Cell currCell) {
         if (prevCell!=null){
             if (prevCell.X() > currCell.X()){
-                prevCell.RmLeftWall();
-                currCell.RmRightWall();
+                prevCell.LeftWall = false;
+                currCell.RightWall = false;
             }else if (prevCell.X() < currCell.X()){
-                prevCell.RmRightWall();
-                currCell.RmLeftWall();
+                prevCell.RightWall = false;
+                currCell.LeftWall = false;
             }else if (prevCell.Y() > currCell.Y()){
-                prevCell.RmFrontWall();
-                currCell.RmBackWall();
+                prevCell.FrontWall = false;
+                currCell.BackWall = false;
             }else if (prevCell.Y() < currCell.Y()){
-                prevCell.RmBackWall();
-                currCell.RmFrontWall();
+                prevCell.BackWall = false;
+                currCell.FrontWall = false;
             }
         }
     }
-    List<Cell> RetrieveAdjacentNodes(Cell currCell){
-        List<Cell> AdjacentCells = new List<Cell>();
-        int x = currCell.X();
-	    int y = currCell.Y();
-        if (currCell.X()+1 < width){
-            if (!_mazeGrid[currCell.X()+1,y].IsVisited()){
-                AdjacentCells.Add(_mazeGrid[currCell.X()+1,y]);
+    public List<Cell> RetrieveAdjacentNodes(List<Cell> cells){
+        List<Cell> adjcells = new List<Cell>();
+        foreach (Cell cell in cells){
+            if (!cell.IsVisited()){
+                adjcells.Add(cell);
             }
         }
-        if (currCell.X()-1 >= 0){
-            if (!_mazeGrid[currCell.X()-1,y].IsVisited()){
-                AdjacentCells.Add(_mazeGrid[currCell.X()-1,y]);
-            }
-        }
-        if (currCell.Y()+1 < height){
-            if (!_mazeGrid[x,currCell.Y()+1].IsVisited()){
-                AdjacentCells.Add(_mazeGrid[x,currCell.Y()+1]);
-            }
-            
-        }
-        if (currCell.Y()-1 >= 0){
-            if (!_mazeGrid[x,currCell.Y()-1].IsVisited()){
-                AdjacentCells.Add(_mazeGrid[x,currCell.Y()-1]);
-            }
-        }
-        return AdjacentCells;
-    } 
-    List<Cell> RandomSortList(List<Cell> cells){
+        return adjcells; 
+    }
+    List<Cell> FYShuffleList(List<Cell> rndList){
         Random rnd = new Random();
-        List<Cell> rndList = new List<Cell>();
-        rndList = cells.OrderBy(x => rnd.Next()).ToList();
+        for(int i = rndList.Count-1;i>0;i--){
+            var k = rnd.Next(i+1);
+            Cell tempCell = rndList[k];
+            rndList[k] = rndList[i];
+            rndList[i] = tempCell;
+        }
         return rndList;
     }
-    public Cell NeighbourNode(Cell currCell){
-        List<Cell> AdjCell = RetrieveAdjacentNodes(currCell);
-        AdjCell = RandomSortList(AdjCell);
+    public Cell NeighbourCell(Cell currCell){
+        List<Cell> AdjCell = RetrieveAdjacentNodes(currCell.neighbourCells);
+        AdjCell = FYShuffleList(AdjCell);
         return AdjCell.FirstOrDefault();
+    }
+    public string PrintConnectedNeighbours(){
+        string message = "";
+        foreach (Cell cell in _mazeGrid){
+            message+=$"{cell.X()},{cell.Y()}:";
+            for (int i = 0;i<cell.connectedCells.Count;i++){
+                message+=$"({cell.connectedCells[i].X()},{cell.connectedCells[i].Y()}) | ";
+            }
+            message+=$"\n";
+        }
+        return message;
+    }
+    public void SetConnectedCells(){
+        foreach (Cell currcell in _mazeGrid){
+            if (!currcell.FrontWall && currcell.Y()-1 >= 0){
+                currcell.AddConnectedCell(GetMazeCell(currcell.X(), currcell.Y()-1));
+            }
+            if (!currcell.BackWall && currcell.Y()+1 < height){
+                currcell.AddConnectedCell(GetMazeCell(currcell.X(), currcell.Y()+1));
+            }
+            if (!currcell.LeftWall && currcell.X()-1 >= 0){
+                currcell.AddConnectedCell(GetMazeCell(currcell.X()-1, currcell.Y()));
+            }
+            if (!currcell.RightWall && currcell.X()+1 < width){
+                currcell.AddConnectedCell(GetMazeCell(currcell.X()+1, currcell.Y()));
+            }
+        }
+        }
+    public void CreateMaze(MazeGrid maze){
+        maze.InitialiseMaze();
+        maze.GetMazeCell(0,0).FrontWall = false;
+        maze.GetMazeCell(maze.Width()-1,maze.Height()-1).BackWall = false;
+        maze.DFSGenerateMaze(null,maze.GetMazeCell(0,0));
+        SetConnectedCells();
     }
 }
 }

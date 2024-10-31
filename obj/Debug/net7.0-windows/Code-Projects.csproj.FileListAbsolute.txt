@@ -1,0 +1,15 @@
+C:\Users\jpang18\Documents\Maze-Project\bin\Debug\net7.0-windows\Code-Projects.exe
+C:\Users\jpang18\Documents\Maze-Project\bin\Debug\net7.0-windows\Code-Projects.deps.json
+C:\Users\jpang18\Documents\Maze-Project\bin\Debug\net7.0-windows\Code-Projects.runtimeconfig.json
+C:\Users\jpang18\Documents\Maze-Project\bin\Debug\net7.0-windows\Code-Projects.dll
+C:\Users\jpang18\Documents\Maze-Project\bin\Debug\net7.0-windows\Code-Projects.pdb
+C:\Users\jpang18\Documents\Maze-Project\obj\Debug\net7.0-windows\Code-Projects.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jpang18\Documents\Maze-Project\obj\Debug\net7.0-windows\Code-Projects.AssemblyInfoInputs.cache
+C:\Users\jpang18\Documents\Maze-Project\obj\Debug\net7.0-windows\Code-Projects.AssemblyInfo.cs
+C:\Users\jpang18\Documents\Maze-Project\obj\Debug\net7.0-windows\Code-Projects.csproj.CoreCompileInputs.cache
+C:\Users\jpang18\Documents\Maze-Project\obj\Debug\net7.0-windows\Code-Projects.sourcelink.json
+C:\Users\jpang18\Documents\Maze-Project\obj\Debug\net7.0-windows\Code-Projects.dll
+C:\Users\jpang18\Documents\Maze-Project\obj\Debug\net7.0-windows\refint\Code-Projects.dll
+C:\Users\jpang18\Documents\Maze-Project\obj\Debug\net7.0-windows\Code-Projects.pdb
+C:\Users\jpang18\Documents\Maze-Project\obj\Debug\net7.0-windows\Code-Projects.genruntimeconfig.cache
+C:\Users\jpang18\Documents\Maze-Project\obj\Debug\net7.0-windows\ref\Code-Projects.dll

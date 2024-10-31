@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jpang18\\Documents\\Code-Projects\\Code-Projects.csproj": {}
+    "C:\\Users\\jpang18\\Documents\\Maze-Project\\Code-Projects.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jpang18\\Documents\\Code-Projects\\Code-Projects.csproj": {
+    "C:\\Users\\jpang18\\Documents\\Maze-Project\\Code-Projects.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jpang18\\Documents\\Code-Projects\\Code-Projects.csproj",
+        "projectUniqueName": "C:\\Users\\jpang18\\Documents\\Maze-Project\\Code-Projects.csproj",
         "projectName": "Code-Projects",
-        "projectPath": "C:\\Users\\jpang18\\Documents\\Code-Projects\\Code-Projects.csproj",
+        "projectPath": "C:\\Users\\jpang18\\Documents\\Maze-Project\\Code-Projects.csproj",
         "packagesPath": "C:\\Users\\jpang18\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jpang18\\Documents\\Code-Projects\\obj\\",
+        "outputPath": "C:\\Users\\jpang18\\Documents\\Maze-Project\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\jpang18\\AppData\\Roaming\\NuGet\\NuGet.Config"
