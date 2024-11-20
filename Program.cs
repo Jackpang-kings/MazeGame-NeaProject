@@ -1,5 +1,4 @@
 ﻿using System;
-
 namespace MazeGame { 
 class Program { 
     static void Main() {
@@ -52,7 +51,7 @@ class Program {
     static void testScript(){
         //testCell();
         //testMazeGrid();
-        //testCreateRandomGraph(10,10);
+        testCreateRandomGraph(10,10);
     }
     static void testCell(){
         Console.WriteLine("Class cell test:");
@@ -138,9 +137,9 @@ class Program {
         string message = "";
         foreach (Cell cell in cells){
             if (cell.FrontWall){
-            message += "+--+";
+            message += "+---+";
             }else{
-            message += "+  +";
+            message += "+   +";
             }
         }
         message +="\n";
@@ -154,6 +153,7 @@ class Program {
             }else{
                 message += "  ";
             }
+            message += " ";
             if (cell.RightWall){
                 message += " |";
             }else{
@@ -167,18 +167,20 @@ class Program {
         string message = "";
         foreach (Cell cell in cells){
             if (cell.BackWall){
-                message += "+--+";
+                message += "+---+";
             }else{
-                message += "+  +";
+                message += "+   +";
             }
         }
         return message;
         
     }
     static string MazePrint(MazeGrid _maze) {
-        string mazeprintmessage ="".PadLeft(5);
-        for (int i = 0;i<_maze.Width();i++ ){
-            mazeprintmessage += $"{Convert.ToString(i)}".PadRight(4);
+        string mazeprintmessage ="".PadLeft(3);
+        for (int i = 0;i<_maze.Width();i++){
+            mazeprintmessage +="".PadLeft(2);
+            mazeprintmessage += $"{Convert.ToString(i)}";
+            mazeprintmessage +="".PadLeft(2);
         }
         mazeprintmessage += "\n".PadRight(4);
         mazeprintmessage += PrintCellFrontWall(_maze.GetMazeRows(0));
@@ -207,23 +209,15 @@ class Program {
         return size;
     }
     static bool IsNode(Cell cell,int w,int h){
-            if(cell.X()==0&&cell.Y()==0){
+            if((cell.X()==0&&cell.Y()==0)|(cell.X()==w-1&&cell.Y()==h-1)){
                 return true;
-            }else if (cell.X()==w-1&&cell.Y()==h){
-                return true;
-            }
-            else if (cell.FrontWall&&cell.BackWall){
-                if (cell.RightWall^cell.LeftWall){
-                    return true;
-                }
-            }else if (cell.RightWall&&cell.LeftWall){
-                if (cell.FrontWall^cell.BackWall){
-                    return true;
-                }
-            }else if (!((cell.FrontWall&&cell.BackWall)|(cell.LeftWall&&cell.RightWall))){
+            }else if (cell.FrontWall&&cell.BackWall&&!cell.RightWall&&!cell.LeftWall){
+                return false;
+            }else if (!cell.FrontWall&&!cell.BackWall&&cell.RightWall&&cell.LeftWall){
+                return false;
+            }else{
                 return true;
             }
-            return false;
         }
 }
 }
